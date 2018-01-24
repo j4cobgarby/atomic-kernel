@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "VGA_constants.h"
+#include "io.h"
 
 #define VGA_COLS 80
 #define VGA_ROWS 25
@@ -68,5 +69,6 @@ void vga_setcolour(uint8_t colour) {
 extern "C"
 void kernel_main() {
      vga_clear();
-     vga_prints("Hello, world!\nThis is my kernel.");
+     vga_prints("Hello, world!\n");
+     vga_prints("This is the atomic kernel! > ");
 }
