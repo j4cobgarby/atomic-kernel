@@ -22,12 +22,12 @@ static inline uint8_t inb(uint16_t port) {
 ////////////////////////////////////////////
 
 extern "C"
-static void enable_nmi() {
+inline void enable_nmi() {
      outb(0x70, inb(0x70)&0x7f);
 }
 
 extern "C"
-static void disable_nmi() {
+inline void disable_nmi() {
      outb(0x70, inb(0x70)&0x80);
 }
 

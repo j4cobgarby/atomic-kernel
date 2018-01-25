@@ -26,8 +26,10 @@ stack_top:
 
 _start:
 	mov esp, stack_top	; set up stack - it grows downwards on x86
-
+	
 	;; in the future, initialise the processor state here. (GDT, paging, etc.)
+	cli
+	lgdt [gdt_descript]
 
 	call kernel_main
 
@@ -49,7 +51,7 @@ gdt_start:
 	;; 32-39	more bits of the base address, 16:23
 	;; 40-47	access byte (basically, the 'type')
 	;; 48-51	more bits of the limit, 16:19
-	;; 55-52	flags
+	;; 52-55	flags
 	;; 56-63	last bits of the base, 24:31
 
 	;; limit = 20 bits
@@ -85,8 +87,26 @@ gdt_start:
 gdt_null:
 	dd 0x0
 	dd 0x0
-gdt_cs: // Kernel code section
+gdt_cs:  			; KERNEL CODE:
 	dw 0xffff		; limit 0:15
 	dw 0x0000		; base  0:15
 	db 0x0000		; base  16:23
-gdt_cs:	
+	db 10011010b		; access
+	db 11111100b		; limit 16:19 | flags
+	db 0x0000		; base 24:32
+gdt_ds:				; KERNEL DATA
+	dw 0xffff
+	dw 0x0000
+	db 0x0000
+	db 10010010b
+	db 11111100b
+	db 0x0000
+gdt_end:			; addr. of end of gdt
+
+gdt_descript:
+	dw gdt_end - gdt_start - 1 ; size of gdt
+	dd gdt_start
+
+	;; addresses of gdt segs, relative to the start of the gdt
+	CODE_SEG_ADDR equ gdt_cs - gdt_start
+	DATA_SEG_ADDR equ gdt_ds - gdt_start

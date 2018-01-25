@@ -4,7 +4,7 @@
 #include "io.h"
 
 inline void init_gdt() {
-     disable_
+     
 }
 
 #endif
