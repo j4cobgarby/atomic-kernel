@@ -17,20 +17,6 @@ static inline uint8_t inb(uint16_t port) {
      return ret;
 }
 
-////////////////////////////////////////////
-// Enable/disable non-maskable interrupts //
-////////////////////////////////////////////
-
-extern "C"
-inline void enable_nmi() {
-     outb(0x70, inb(0x70)&0x7f);
-}
-
-extern "C"
-inline void disable_nmi() {
-     outb(0x70, inb(0x70)&0x80);
-}
-
 // Enable/disable interrupts
 
 static void enable_interrupts() {
@@ -40,6 +26,5 @@ static void enable_interrupts() {
 static void disable_interrupts() {
      asm("cli");
 }
-
 
 #endif

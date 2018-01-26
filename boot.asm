@@ -29,8 +29,18 @@ _start:
 	
 	;; in the future, initialise the processor state here. (GDT, paging, etc.)
 	cli
+	call disable_nmi
 	lgdt [gdt_descript]
 
+	;; enter protected mode, by setting protection enable bit in the control register 0 (cr0)
+	mov eax, cr0
+	or al, 1
+	mov cr0, eax
+
+	call reload_cs
+
+	call enable_nmi
+	
 	call kernel_main
 
 	;; computer has nothing left to do - put into infinite loop
@@ -38,8 +48,14 @@ _start:
 	.hang:	hlt
 	jmp .hang
 	.end:
-
-	section .data
+reload_cs:
+	mov ax, 0x10
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	mov ss, ax
+	ret
 gdt_start:
 
 	;; gdt entries go like this:

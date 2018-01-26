@@ -16,6 +16,21 @@ int curr_col = 0;
 int curr_row = 0;
 uint8_t term_colour = 0x0f; // Black BG, White FG
 
+////////////////////////////////////////////
+// Enable/disable non-maskable interrupts //
+////////////////////////////////////////////
+
+void enable_nmi() {
+     outb(0x70, inb(0x70)&0x7f);
+}
+
+void disable_nmi() {
+     outb(0x70, inb(0x70)&0x80);
+}
+
+//
+// VGA
+//
 
 void vga_clear() {
      for (size_t index = 0; index < VGA_COLS * VGA_ROWS; index++) {
@@ -23,6 +38,13 @@ void vga_clear() {
 	  // B is bg
 	  // F is fg
 	  // C is ascii
+	  vga_buff[index] = ((uint16_t)term_colour << 8) | ' ';
+     }
+}
+
+void vga_clear_shift(int shift) {
+     for (size_t index = 0; index < VGA_COLS * VGA_ROWS; index++) {
+	  term_colour = ((((index+shift)%16)+1)<<4)|VGA_COLOUR_WHITE;
 	  vga_buff[index] = ((uint16_t)term_colour << 8) | ' ';
      }
 }
@@ -66,9 +88,14 @@ void vga_setcolour(uint8_t colour) {
      term_colour = colour;
 }
 
-extern "C"
 void kernel_main() {
-     vga_clear();
-     vga_prints("Hello, world!\n");
-     vga_prints("This is the atomic kernel! > ");
+     /*
+     for (int i = 0; 1; i = (i+1)%16) {
+	  vga_clear_shift(i);
+	  for (int x = 0; x < 20000; x++) {
+	       vga_buff[x%(VGA_COLS*VGA_ROWS)] = ((uint16_t)term_colour << 8) | ((x%79)+175);
+	       //vga_buff[x%VGA_COLS*VGA_ROWS] = ((uint16_t)term_colour<<8)|((x%3)+176);
+	  }
+     }
+     */
 }
