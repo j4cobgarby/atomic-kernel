@@ -37,7 +37,7 @@ _start:
 	or al, 1
 	mov cr0, eax
 
-	call reload_cs
+	call 0x08:reload_cs
 
 	call enable_nmi
 	sti
