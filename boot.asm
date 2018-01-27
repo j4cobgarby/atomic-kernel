@@ -57,6 +57,8 @@ reload_cs:
 	mov gs, ax
 	mov ss, ax
 	ret
+	
+	section .data
 gdt_start:
 
 	;; gdt entries go like this:

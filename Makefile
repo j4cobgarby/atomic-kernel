@@ -6,4 +6,4 @@ all:
 	i686-elf-gcc -ffreestanding -nostdlib -fno-use-linker-plugin -g -T linker.ld boot.o kern.o vga.o -o kern.elf -lgcc
 
 run:
-	qemu-system-i386 -kernel kern.elf
+	qemu-system-i386 -kernel kern.elf -soundhw pcspk
