@@ -40,6 +40,7 @@ _start:
 	call reload_cs
 
 	call enable_nmi
+	sti
 	
 	call kernel_main
 

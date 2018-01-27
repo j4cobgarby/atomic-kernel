@@ -17,14 +17,4 @@ static inline uint8_t inb(uint16_t port) {
      return ret;
 }
 
-// Enable/disable interrupts
-
-static void enable_interrupts() {
-     asm("sti");
-}
-
-static void disable_interrupts() {
-     asm("cli");
-}
-
 #endif

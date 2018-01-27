@@ -1,9 +1,15 @@
-#ifndef VGA_CONSTANTS_H
-#define VGA_CONSTANTS_H
+#ifndef VGA_H
+#define VGA_H
 
-#define VGA_COLS 80
-#define VGA_ROWS 25
-#define VGA_TEXTBUF_START 0xb8000
+#include <stddef.h>
+#include <stdint.h>
+#include "cursor.h"
+#include "system_constants.h"
+
+extern volatile uint16_t* vga_buff;
+extern int curr_col;
+extern int curr_row;
+extern uint8_t term_colour;
 
 enum VGA_COLOUR {
 	VGA_COLOUR_BLACK = 0,
@@ -31,5 +37,11 @@ static inline uint8_t make_vga_colour(enum VGA_COLOUR foreground, enum VGA_COLOU
 static inline uint16_t make_vga_entry(unsigned char cha, uint8_t colour) {
      return (uint16_t) colour << 8 | (uint16_t) cha;
 }
+
+void vga_clear();
+void vga_putc(char c);
+void vga_prints(const char* str);
+void vga_setcolour(uint8_t colour);
+
 
 #endif

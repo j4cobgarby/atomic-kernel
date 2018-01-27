@@ -1,0 +1,10 @@
+#ifndef SYSTEM_CONSTANTS_H
+#define SYSTEM_CONSTANTS_H
+
+#define ATOMIC_KERNEL_VERSION_STRING "0.4 alpha"
+
+#define VGA_COLS 80
+#define VGA_ROWS 25
+#define VGA_TEXTBUF_START 0xb8000
+
+#endif
