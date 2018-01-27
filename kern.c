@@ -1,3 +1,15 @@
+/* kern.c --- 
+ * 
+ * Filename: kern.c
+ * Description: High level entry point of the kernel.
+ * Author: Jacob Garby
+ * URL: https://github.com/j4cobgarby/atomic-kernel/kern.c
+ * 
+ */
+
+/* Code: */
+
+
 // These two headers are provided by GCC itself, so no worry about not having them available
 #include <stddef.h>
 #include <stdint.h>
@@ -56,3 +68,5 @@ void kernel_main() {
      vga_prints("VERSION ");
      vga_prints(ATOMIC_KERNEL_VERSION_STRING);
 }
+
+/* kern.c ends here */

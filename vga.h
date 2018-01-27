@@ -1,3 +1,15 @@
+/* vga.h --- 
+ * 
+ * Filename: vga.h
+ * Description: Declarations of some low level vga functions, and also the vga colours. This is for textmode, not video
+ * Author: Jacob Garby
+ * URL: 
+ * 
+ */
+
+/* Code: */
+
+
 #ifndef VGA_H
 #define VGA_H
 
@@ -45,3 +57,5 @@ void vga_setcolour(uint8_t colour);
 
 
 #endif
+
+/* vga.h ends here */

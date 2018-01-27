@@ -1,3 +1,15 @@
+/* scancodes.h --- 
+ * 
+ * Filename: scancodes.h
+ * Description: An enum to translate keyboard scancodes to the key represented.
+ * Author: Jacob Garby
+ * URL: https://github.com/j4cobgarby/atomic-kernel/scancodes.h
+ * 
+ */
+
+/* Code: */
+
+
 #ifndef SCANCODES_H
 #define SCANCODES_H
 
@@ -90,3 +102,5 @@ typedef enum {
 } SCANCODE;
 
 #endif
+
+/* scancodes.h ends here */

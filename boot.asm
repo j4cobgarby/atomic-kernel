@@ -1,3 +1,15 @@
+;;; boot.asm --- 
+;; 
+;; Filename: boot.asm
+;; Description: Contains the entry point of the kernel, as well as initialisation of various components.
+;; Author: Jacob Garby
+;; URL: https://github.com/j4cobgarby/atomic-kernel/boot.asm
+;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 
+;;; Code:
+
+
 	FLAGS	equ 0x3
 	MAGIC	equ 0x1BADB002
 	CHECKSUM equ -(FLAGS + MAGIC) ; (FLAGS + MAGIC) + CHECKSUM must equal zero.
@@ -129,3 +141,6 @@ gdt_descript:
 	;; addresses of gdt segs, relative to the start of the gdt
 	CODE_SEG_ADDR equ gdt_cs - gdt_start
 	DATA_SEG_ADDR equ gdt_ds - gdt_start
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; boot.asm ends here

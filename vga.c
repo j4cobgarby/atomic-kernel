@@ -1,3 +1,15 @@
+/* vga.c --- 
+ * 
+ * Filename: vga.c
+ * Description: Implementations of some low-level vga functions
+ * Author: Jacob Garby
+ * URL: https://github.com/j4cobgarby/atomic-kernel/vga.c
+ * 
+ */
+
+/* Code: */
+
+
 #include "vga.h"
 
 void vga_clear() {
@@ -49,3 +61,5 @@ void vga_prints(const char* str) {
 void vga_setcolour(uint8_t colour) {
      term_colour = colour;
 }
+
+/* vga.c ends here */

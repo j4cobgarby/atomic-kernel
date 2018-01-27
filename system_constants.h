@@ -1,3 +1,15 @@
+/* system_constants.h --- 
+ * 
+ * Filename: system_constants.h
+ * Description: Constants, included in most kernel files.
+ * Author: Jacob Garby
+ * URL: https://github.com/j4cobgarby/atomic-kernel/system_constants.h
+ * 
+ */
+
+/* Code: */
+
+
 #ifndef SYSTEM_CONSTANTS_H
 #define SYSTEM_CONSTANTS_H
 
@@ -8,3 +20,5 @@
 #define VGA_TEXTBUF_START 0xb8000
 
 #endif
+
+/* system_constants.h ends here */

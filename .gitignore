@@ -46,3 +46,6 @@ flycheck_*.el
 
 *.o
 *.elf
+
+build
+dist

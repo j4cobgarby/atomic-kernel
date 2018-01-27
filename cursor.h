@@ -1,3 +1,15 @@
+/* cursor.h --- 
+ * 
+ * Filename: cursor.h
+ * Description: Various inline functions to modify the state of the kernel in the vga textmode
+ * Author: Jacob Garby
+ * URL: https://github.com/j4cobgarby/atomic-kernel/cursor.h
+ * 
+ */
+
+/* Code: */
+
+
 #ifndef CURSOR_H
 #define CURSOR_H
 
@@ -27,3 +39,5 @@ static inline void enable_cursor(uint8_t cursor_start, uint8_t cursor_end) {
 }
 
 #endif
+
+/* cursor.h ends here */
