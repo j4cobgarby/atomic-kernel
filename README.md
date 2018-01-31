@@ -7,14 +7,7 @@ My latest attempt at a kernel!
 ### Requirements
 #### For building
  - nasm assembler
- - i686-elf-gcc cross compiler
-#### For emulating (optional, if you want to boot on real hardware)
- - qemu-system-i386
-
-To get everything needed on Arch Linux, using trizen:
-```
-trizen -S qemu qemu-arch-extra nasm i686-elf-gcc i686-elf-binutils
-```
+ - i686-elf-gcc cross compiler (any one will do, probably, but it seems that the one provided on the AUR doesn't work.)
 
 ### How to build
 ```
@@ -27,8 +20,7 @@ and then to emulate on qemu
 make run
 ```
 ### Usage
-There's currently no usage instructions, because the user in fact can't do anything in the
-operating system yet.
+There's currently no usage instructions, because the user in fact can't do anything at this point in time.
 
 ## Todo list
 
