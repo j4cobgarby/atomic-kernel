@@ -10,10 +10,13 @@ all:
 	mkdir -p build dist
 
 	${NASM_ASSEMBLER} ${NASM_FLAGS} boot.asm -o build/boot.o
+
 	${CC} -c kern.c -o build/kern.o ${CC_FLAGS}
 	${CC} -c vga.c -o build/vga.o ${CC_FLAGS}
+	${CC} -c idt.c -o build/idt.o ${CC_FLAGS}
+	${CC} -c io.c -o build/io.o ${CC_FLAGS}
 
-	${LD} ${LD_FLAGS} -T linker.ld build/boot.o build/kern.o build/vga.o -o dist/kern.elf -lgcc
+	${LD} ${LD_FLAGS} -T linker.ld build/boot.o build/io.o build/kern.o build/vga.o build/idt.o -o dist/kern.elf -lgcc
 
 run:
 	qemu-system-i386 -kernel dist/kern.elf
