@@ -19,14 +19,14 @@
 #include "io.h"
 #include "cursor.h"
 
-extern void load_idt(unsigned long *idt_ptr); // calls assembly to load idt from the given ptr
+extern void load_idt(unsigned long *idt_ptr);	// calls assembly to load idt from the given ptr
 
 typedef struct idt_entry {
-	unsigned short int offset_low; // offset 0..15
-	unsigned short int selector; // code seg. selector in GDT (or LDT in future)
-	unsigned char zero; // just one byte, = 0
-	unsigned char type_and_attributes; // see below
-	unsigned short int offset_high; // offset 16..31
+    unsigned short int offset_low;	// offset 0..15
+    unsigned short int selector;	// code seg. selector in GDT (or LDT in future)
+    unsigned char zero;		// just one byte, = 0
+    unsigned char type_and_attributes;	// see below
+    unsigned short int offset_high;	// offset 16..31
 } idt_entry;
 
 /* type_and_attributes
@@ -52,53 +52,55 @@ typedef struct idt_entry {
  * +--------+-----+------+----------------------------------+ 
  */
 
-idt_entry idt[256]; // 256 entries of the idt
+idt_entry idt[256];		// 256 entries of the idt
 
 void idt_init() {
-	unsigned long idt_addr;
-	unsigned long idt_ptr[2];
+    unsigned long idt_addr;
+    unsigned long idt_ptr[2];
 
-	// send words to IC (google ICW)
-	outb(0x20, 0x11);
-	outb(0xa0, 0x11);
+    // send words to IC (info about the ICWs here: http://www.brokenthorn.com/Resources/OSDevPic.html)
+    outb(0x20, 0x11);
+    outb(0xa0, 0x11);
 
-	outb(0x21, 0x20);
-	outb(0xa1, 0x28);
+    outb(0x21, 0x20);		// master pic vector offset
+    outb(0xa1, 0x28);		// slave pic vector offset
 
-	outb(0x21, 0x00);
-	outb(0xa1, 0x00);
+    outb(0x21, 0x00);		// tell master that there's a slave at irq2
+    outb(0xa1, 0x00);
 
-	outb(0x21, 0x01);
-	outb(0xa1, 0x01);
+    outb(0x21, 0x01);
+    outb(0xa1, 0x01);
 
-	outb(0x21, 0xff);
-	outb(0xa1, 0xff);
+    // initialisation of PIC finished
 
-	idt_addr = (unsigned long) idt;
-	idt_ptr[0] = (sizeof(idt_entry) * 256) + ((idt_addr & 0xffff) << 16);
-	idt_ptr[1] = idt_addr >> 16;
+    outb(0x21, 0xff);
+    outb(0xa1, 0xff);
 
-	load_idt(idt_ptr);
+    idt_addr = (unsigned long) idt;
+    idt_ptr[0] = (sizeof(idt_entry) * 256) + ((idt_addr & 0xffff) << 16);
+    idt_ptr[1] = idt_addr >> 16;
+
+    load_idt(idt_ptr);
 }
 
 // This is the start of the vga text buffer. It's volatile because it can be changed
 // by things outside of this program (by interrupts, etc.)
-volatile uint16_t* vga_buff = (uint16_t*) 0xb8000;
+volatile uint16_t *vga_buff = (uint16_t *) 0xb8000;
 
 int curr_col = 0;
 int curr_row = 0;
-uint8_t term_colour = 0x0f; // Black BG, White FG
+uint8_t term_colour = 0x0f;	// Black BG, White FG
 
 ////////////////////////////////////////////
 // Enable/disable non-maskable interrupts //
 ////////////////////////////////////////////
 
 void enable_nmi() {
-     outb(0x70, inb(0x70)&0x7f);
+    outb(0x70, inb(0x70) & 0x7f);
 }
 
 void disable_nmi() {
-     outb(0x70, inb(0x70)&0x80);
+    outb(0x70, inb(0x70) & 0x80);
 }
 
 //
@@ -106,33 +108,34 @@ void disable_nmi() {
 //
 
 void vga_clear_shift(int shift) {
-     for (size_t index = 0; index < VGA_COLS * VGA_ROWS; index++) {
-	  term_colour = ((((index+shift)%16)+1)<<4)|VGA_COLOUR_WHITE;
-	  vga_buff[index] = ((uint16_t)term_colour << 8) | ' ';
-     }
+    for (size_t index = 0; index < VGA_COLS * VGA_ROWS; index++) {
+	term_colour =
+	    ((((index + shift) % 16) + 1) << 4) | VGA_COLOUR_WHITE;
+	vga_buff[index] = ((uint16_t) term_colour << 8) | ' ';
+    }
 }
 
 void kernel_main() {
-     /* uncomment me for fun rainbow thing
-     for (int i = 0; 1; i = (i+1)%16) {
-	  vga_clear_shift(i);
-	  for (int x = 0; x < 20000; x++) {
-	       vga_buff[x%(VGA_COLS*VGA_ROWS)] = ((uint16_t)term_colour << 8) | ((x%79)+175);
-	       //vga_buff[x%VGA_COLS*VGA_ROWS] = ((uint16_t)term_colour<<8)|((x%3)+176);
-	  }
-     }
+    /* uncomment me for fun rainbow thing
+       for (int i = 0; 1; i = (i+1)%16) {
+       vga_clear_shift(i);
+       for (int x = 0; x < 20000; x++) {
+       vga_buff[x%(VGA_COLS*VGA_ROWS)] = ((uint16_t)term_colour << 8) | ((x%79)+175);
+       //vga_buff[x%VGA_COLS*VGA_ROWS] = ((uint16_t)term_colour<<8)|((x%3)+176);
+       }
+       }
      */
-	idt_init();
+    idt_init();
 
-     enable_cursor(0, 15);
-     update_cursor(curr_col, curr_row);
-     
-     vga_clear();
-     vga_prints("Welcome to The Atomic Kernel\n");
-     vga_prints("VERSION ");
-     vga_prints(ATOMIC_KERNEL_VERSION_STRING);
+    enable_cursor(0, 15);
+    update_cursor(curr_col, curr_row);
 
-	while (1);
+    vga_clear();
+    vga_prints("Welcome to The Atomic Kernel\n");
+    vga_prints("VERSION ");
+    vga_prints(ATOMIC_KERNEL_VERSION_STRING);
+
+    while (1);
 }
 
 /* kern.c ends here */

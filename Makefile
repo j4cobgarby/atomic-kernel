@@ -17,3 +17,6 @@ all:
 
 run:
 	qemu-system-i386 -kernel dist/kern.elf
+
+format:
+	indent -kr -brf *.c *.h
