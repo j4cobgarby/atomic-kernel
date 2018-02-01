@@ -16,4 +16,4 @@ all:
 	${LD} ${LD_FLAGS} -T linker.ld build/boot.o build/kern.o build/vga.o -o dist/kern.elf -lgcc
 
 run:
-	qemu-system-i386 -kernel dist/kern.elf -soundhw pcspk
+	qemu-system-i386 -kernel dist/kern.elf
