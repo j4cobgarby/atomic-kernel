@@ -35,7 +35,7 @@ stack_top:
 	extern disable_nmi
 	
 	global _start ; declare start as a function symbol with the given symbol size
-
+	global load_idt
 _start:
 	mov esp, stack_top	; set up stack - it grows downwards on x86
 	
@@ -69,7 +69,13 @@ reload_cs:
 	mov gs, ax
 	mov ss, ax
 	ret
-	
+
+load_idt:
+	mov edx, [esp + 4] ; take c parameter to edx
+	lidt [edx] ; load c param into the idt, since it's an idt descriptor
+	sti ; enable interrupts
+	ret	
+
 	section .data
 gdt_start:
 
